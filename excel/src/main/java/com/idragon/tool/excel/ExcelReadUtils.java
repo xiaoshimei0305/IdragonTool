@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.idragon.tool.base.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
@@ -94,7 +96,7 @@ public class ExcelReadUtils {
                 Row tempRow=sheet.getRow(j);
                 JSONObject item=new JSONObject();
                 boolean allEmpty=true;
-                for(int k=0;k<=colNum;k++){
+                for(int k=0;k<colNum;k++){
                     String value=CellReadUtils.getValueByIndex(tempRow,k,"");
                     if(StringUtils.isBlank(titleNames[k])){
                         continue;
@@ -137,12 +139,10 @@ public class ExcelReadUtils {
      * @throws IOException
      */
     public static Workbook getWorkbookByFileName(InputStream inputStream, boolean  isXlsx) throws IOException {
-        if(isXlsx){
+        if(!isXlsx){
             return new XSSFWorkbook(inputStream);
         }else{
             return new HSSFWorkbook(inputStream);
         }
     }
-
-
 }
