@@ -12,7 +12,7 @@
     <artifactId>http</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.idragon</groupId>
+            <groupId>com.idragon.tool</groupId>
             <artifactId>base</artifactId>
             <version>${project.version}</version>
         </dependency>
