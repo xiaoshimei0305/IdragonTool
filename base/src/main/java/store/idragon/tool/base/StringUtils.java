@@ -1,4 +1,4 @@
-package com.idragon.tool.base;
+package store.idragon.tool.base;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -6,8 +6,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 /**
  * @author xiaoshimei0305
  * @version 1.0
- * @date 2020/10/18 10:53 下午
- * @description 字符串处理工具
+ * date 2020/10/18 10:53 下午
+ * description 字符串处理工具
  */
 public class StringUtils extends  org.apache.commons.lang3.StringUtils  {
 

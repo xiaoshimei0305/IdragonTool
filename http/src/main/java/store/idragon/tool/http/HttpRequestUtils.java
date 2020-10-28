@@ -1,7 +1,7 @@
-package com.idrgagon.tool.http;
+package store.idragon.tool.http;
 
 import com.alibaba.fastjson.JSONObject;
-import com.idragon.tool.base.StringUtils;
+import store.idragon.tool.base.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -17,8 +17,8 @@ import java.io.InputStreamReader;
  * 常用网络请求接口，适用于简单请求模式。如果需要复杂配置，请使用apache API进行请求
  * @author xiaoshimei0305
  * @version 1.0
- * @date 2020/10/18 11:04 下午
- * @description
+ * date 2020/10/18 11:04 下午
+ * description
  */
 public class HttpRequestUtils {
     /**
