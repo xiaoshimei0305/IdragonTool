@@ -1,6 +1,4 @@
-# ![Idragon](https://thirdwx.qlogo.cn/mmopen/vi_32/nRJ4vegIVcBpAXwuHLVsQicJWnLXCUkMv02fFicEhrhQpiaJ0CPVWia2y17vvdtHK00hpwNaGJIpekibkdbD7ybxCIA/132)IdragonTool
-
-## 简介
+简介
 
 > 让事情变得简单，覆盖九成情况，留给项目一线生机
 >
@@ -21,5 +19,21 @@
 
 ## 快速开始
 
+* 引入工具包
 
+  ```
+      <dependency>
+        <groupId>store.idragon.tool</groupId>
+        <artifactId>excel</artifactId>
+        <version>0.0.1-RELEASE</version>
+      </dependency>
+  ```
 
+* 操作示例
+
+  ```
+   //直接读取表格数据
+   JSONObject data = ExcelReadUtils.getDataByFileName("***.xlsx");
+   //读取指定sheet页数据，通过Title映射到对应实体当中
+   List<UserInfo> list=ExcelReadUtils.getDataByFileName("user.xlsx","sheet",UserInfo.class);
+  ```
