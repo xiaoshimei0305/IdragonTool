@@ -22,11 +22,12 @@
 * 引入工具包
 
   ```
-      <dependency>
-        <groupId>store.idragon.tool</groupId>
-        <artifactId>excel</artifactId>
-        <version>0.0.1-RELEASE</version>
-      </dependency>
+  <!-- https://mvnrepository.com/artifact/store.idragon.tool/base -->
+  <dependency>
+      <groupId>store.idragon.tool</groupId>
+      <artifactId>base</artifactId>
+      <version>0.0.1-RELEASE</version>
+  </dependency>
   ```
 
 * 操作示例
