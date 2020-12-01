@@ -22,8 +22,8 @@ public class CellReadUtils {
         if(row!=null){
             Cell cell = row.getCell(index);
             if(cell!=null){
-                cell.setCellType(CellType.STRING);
-                return StringUtils.isBlank(cell.getStringCellValue())?defaultValue:cell.getStringCellValue();
+                String cellValue=cell.getStringCellValue();
+                return StringUtils.isBlank(cellValue)?defaultValue:cellValue;
             }
         }
         return defaultValue;
