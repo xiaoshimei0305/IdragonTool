@@ -37,9 +37,9 @@ public class ExcelReadUtils {
      * @param fileName file name
      * @param sheetName sheet name
      * @param targetClass target class
-     * @param <T>
-     * @return
-     * @throws IOException
+     * @param <T> 数据类型
+     * @return 读取到的结果
+     * @throws IOException 文件数据读取存在IO异常情况
      */
     public static <T> List<T> getDataByFileName(String fileName,String sheetName,Class<T> targetClass) throws IOException {
         JSONObject json=getDataByFileName(fileName);
@@ -49,8 +49,8 @@ public class ExcelReadUtils {
     /**
      *  Get data by file name
      * @param fileName file name
-     * @return
-     * @throws IOException
+     * @return Excel 文件数据
+     * @throws IOException 文件数据读取存在IO异常情况
      */
     public static JSONObject getDataByFileName(String fileName) throws IOException {
         return getDataByFileName(fileName,0);
@@ -59,8 +59,8 @@ public class ExcelReadUtils {
      *  Get data by file name
      * @param fileName file name
      * @param titleIndex title index
-     * @return
-     * @throws IOException
+     * @return Excel 文件数据
+     * @throws IOException 文件数据读取存在IO异常情况
      */
     public static JSONObject getDataByFileName(String fileName,int titleIndex) throws IOException {
         Workbook wb = getWorkbookByFileName(fileName);
@@ -70,7 +70,7 @@ public class ExcelReadUtils {
      * format Workbook data to JSON
      * @param workbook Workbook
      * @param titleIndex index of title
-     * @return
+     * @return 表格数据
      */
     public static JSONObject workbookToJSON(Workbook workbook,int titleIndex){
         JSONObject data=new JSONObject();
@@ -118,7 +118,7 @@ public class ExcelReadUtils {
      *  GET @Workbook object by fileName
      * @param fileName file name
      * @return Workbook
-     * @throws IOException
+     * @throws IOException 文件数据读取存在IO异常情况
      */
     public static Workbook getWorkbookByFileName(String fileName) throws IOException {
         if(StringUtils.isBlank(fileName)){
@@ -135,8 +135,8 @@ public class ExcelReadUtils {
      *  Get @Workbook object by InputStream
      * @param inputStream InputStream
      * @param isXlsx check excel version
-     * @return
-     * @throws IOException
+     * @return Workbook 对象
+     * @throws IOException 文件数据读取存在IO异常情况
      */
     public static Workbook getWorkbookByFileName(InputStream inputStream, boolean  isXlsx) throws IOException {
         if(!isXlsx){

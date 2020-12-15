@@ -7,7 +7,7 @@
     <groupId>store.idragon.tool</groupId>
     <artifactId>tool</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-RELEASE</version>
+    <version>0.0.2-RELEASE</version>
     <name>IDragon</name>
     <description>idragon tool</description>
     <url>http://idragon.store</url>
@@ -161,6 +161,8 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
                 <configuration>
+                    <aggregate>true</aggregate>
+                    <source>1.7</source>
                     <javadocExecutable>/Library/Java/JavaVirtualMachines/jdk-15.0.1.jdk/Contents/Home/bin/javadoc</javadocExecutable>
                 </configuration>
                 <executions>

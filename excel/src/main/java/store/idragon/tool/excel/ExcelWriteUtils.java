@@ -14,18 +14,24 @@ import java.util.Map;
 /**
  * @author xiaoshimei0305
  * date  2020/11/20 10:37 上午
- * description excel文档修改工具
+ * <p>常用Excel文件写入工具</p>
  * @version 1.0
  */
 public class ExcelWriteUtils {
     /**
-     *  同步内容到指定表格【不删除数据】
+     * 表格内容同步接口
      * @param idCol 主键列
      * @param sourceFile 待同步文件
      * @param sourceSheetName 待同步文件sheet名称
-     * @param targetFile  目标文件
+     * @param targetFile 目标文件
      * @param targetSheetName 目标文件sheet名称
-     * @param ignoreIds 忽略主键
+     * @param ignoreIds  忽略主键【原始表格中找到指定主键[idCol列中的值]，忽略不同步】
+     * <p> 将原始表格数据更新至目标表格：
+     *     1、原始表格：sourceFile[sourceSheetName]
+     *     2、目标表格：targetFile[targetSheetName]
+     *     3、规则：  主键列【idCol】作为数据唯一标示 ，在目标表中找到对应行数据进行更新【无数据则插入表格最后】               \
+     * </p>
+     * @throws IOException 文件读写过程中可能存在IO异常情况
      */
     public static void syncContent(int idCol,String sourceFile,String sourceSheetName,String targetFile,String targetSheetName,String... ignoreIds) throws IOException {
         Workbook sourceWorkBook = ExcelReadUtils.getWorkbookByFileName(sourceFile);
@@ -88,25 +94,21 @@ public class ExcelWriteUtils {
             }
         }
     }
-
     /**
-     * 同步内容到指定表格
+     * 表格内容同步接口
      * @param idCol 主键列
-     * @param ignoreId 忽略主键
+     * @param ignoreId 忽略主键【原始表格中找到指定主键[idCol列中的值]，忽略不同步】
      * @param sheetName 表格名称
      * @param sourceFile 待同步文件
      * @param targetFile 目标文件
+     * <p> 将原始表格数据更新至目标表格：
+     *     1、原始表格：sourceFile[sheetName]
+     *     2、目标表格：targetFile[sheetName]
+     *     3、规则：  主键列【idCol】作为数据唯一标示 ，在目标表中找到对应行数据进行更新【无数据则插入表格最后】               \
+     * </p>
+     * @throws IOException 文件读写过程中可能存在IO异常情况
      */
     public static void syncContent(int idCol,String ignoreId,String sheetName,String sourceFile,String targetFile) throws IOException {
         syncContent(idCol,sourceFile,sheetName,targetFile,sheetName,ignoreId);
     }
-
-    public static void main(String[] args) throws IOException {
-        String sourceFile="/Users/chenxinjun/Downloads/1634879745218265039_陈新俊-Bug-1120.xlsx";
-        String targetFiel="/Users/chenxinjun/work/document/dfshop/项目管理/东购BUG情况汇总.xlsx";
-        syncContent(0,"ID","Bug",sourceFile,targetFiel);
-        System.out.println("同步完成");
-    }
-
-
 }

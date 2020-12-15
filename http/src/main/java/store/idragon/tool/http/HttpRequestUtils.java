@@ -14,19 +14,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * 常用网络请求接口，适用于简单请求模式。如果需要复杂配置，请使用apache API进行请求
+ * 常用HTTP请求方法
  * @author xiaoshimei0305
  * @version 1.0
  * date 2020/10/18 11:04 下午
- * description
+ * <p>汇集常用HTTP请求方法【极简模式】，遇到复杂模式请使用{@link HttpClients}。</p>
  */
 public class HttpRequestUtils {
     /**
      * 获取HTTP响应体文本内容
      * @param response 响应实体
      * @return 响应内容
-     * @throws UnsupportedOperationException
-     * @throws IOException
+     * @throws UnsupportedOperationException 工具未支持的请求
+     * @throws IOException 网络访问异常
      */
     public static String getHttpEntityContent(HttpResponse response) throws UnsupportedOperationException, IOException{
         return getHttpEntityContent(response,null);
@@ -36,8 +36,8 @@ public class HttpRequestUtils {
      * @param response 响应实体
      * @param charSet 字符集，默认utf-8
      * @return 响应内容
-     * @throws UnsupportedOperationException
-     * @throws IOException
+     * @throws UnsupportedOperationException 工具未支持的请求
+     * @throws IOException 网络访问异常
      */
     public static String getHttpEntityContent(HttpResponse response,String charSet) throws UnsupportedOperationException, IOException {
         StringBuffer sb=new StringBuffer();
@@ -57,8 +57,9 @@ public class HttpRequestUtils {
     /**
      * GET请求获取数据
      * @param url 请求地址
+     * @param charset  字符集
      * @return 请求结果
-     * @throws IOException
+     * @throws IOException 网络访问异常
      */
     public static String get(String url,String charset) throws IOException {
         HttpGet get = new HttpGet(url);
@@ -74,7 +75,7 @@ public class HttpRequestUtils {
      * GET请求获取数据
      * @param url 请求地址
      * @return 请求结果
-     * @throws IOException
+     * @throws IOException 网络访问异常
      */
     public static String get(String url) throws IOException {
         return get(url,null);
@@ -83,7 +84,7 @@ public class HttpRequestUtils {
      * 获取JSON格式内容
      * @param url 请求地址
      * @return JSON格式结果，存在为空情况
-     * @throws IOException
+     * @throws IOException 网络访问异常
      */
     public static JSONObject getJson(String url)  throws IOException{
         return getJson(url,null);
@@ -93,14 +94,10 @@ public class HttpRequestUtils {
      * @param url 请求地址
      * @param charSet 内容编码
      * @return JSON格式结果，存在为空情况
-     * @throws IOException
+     * @throws IOException 网络访问异常
      */
     public static JSONObject getJson(String url, String charSet)  throws IOException{
-        String content=get(url,charSet);
-        if(!StringUtils.isBlank(content)){
-            return JSONObject.parseObject(content);
-        }
-        return null;
+        return JSONObject.parseObject(StringUtils.getValue(get(url,charSet),"{}"));
     }
 
 }

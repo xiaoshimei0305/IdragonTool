@@ -1,4 +1,4 @@
-package store.idragon.tool.base.dto;
+package store.idragon.tool.base.dto.result;
 
 import lombok.Data;
 
@@ -29,8 +29,8 @@ public class PageResultParam<T> {
 
     /**
      * 结果数据组装
-     * @param total
-     * @param dataList
+     * @param total 总数
+     * @param dataList 结果列表
      */
     public PageResultParam(long total, List<T> dataList) {
         this.total = total;

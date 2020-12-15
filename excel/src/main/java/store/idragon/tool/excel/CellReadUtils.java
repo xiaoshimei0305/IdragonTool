@@ -1,7 +1,6 @@
 package store.idragon.tool.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import store.idragon.tool.base.StringUtils;
 
@@ -14,16 +13,16 @@ import store.idragon.tool.base.StringUtils;
 public class CellReadUtils {
     /**
      * 获取指定cell值
-     * @param row
-     * @param index
-     * @return
+     * @param row 数据行
+     * @param index 列标示
+     * @param defaultValue 默认值
+     * @return 读取结果数据
      */
     public static String getValueByIndex(Row row, int index, String defaultValue){
         if(row!=null){
             Cell cell = row.getCell(index);
             if(cell!=null){
-                String cellValue=cell.getStringCellValue();
-                return StringUtils.isBlank(cellValue)?defaultValue:cellValue;
+                return StringUtils.getValue(cell.getStringCellValue(),defaultValue);
             }
         }
         return defaultValue;
