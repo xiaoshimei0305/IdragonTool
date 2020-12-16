@@ -3,6 +3,20 @@ package store.idragon.tool.base;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.security.AlgorithmParameters;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidParameterSpecException;
+import org.apache.commons.codec.binary.Base64;
+
 /**
  * @author xiaoshimei0305
  * @version 1.0
@@ -36,4 +50,47 @@ public class StringUtils extends  org.apache.commons.lang3.StringUtils  {
         }
         return jsonString;
     }
+
+    /**
+     *
+     * AES解密数据内容[源自微信小程序加密内容验证时]
+     * @param data  加密密文
+     * @param key  密钥 【微信平台解密密钥问sessionKey】
+     * @param iv   偏移量
+     * @return 解密后密文
+     * @throws Exception 解密异常情况
+     */
+    public static JSONObject aesDecryptToJson(String data, String key, String iv) throws Exception {
+        return JSONObject.parseObject(getValue(aesDecrypt(data,key,iv),"{}"));
+    }
+    /**
+     *
+     * AES解密数据内容[源自微信小程序加密内容验证时]
+     * @param data  加密密文
+     * @param key  密钥 【微信平台解密密钥问sessionKey】
+     * @param iv   偏移量
+     * @return 解密后密文
+     * @throws Exception 解密异常情况
+     */
+    public static String aesDecrypt(String data, String key, String iv) throws Exception {
+        //被加密的数据
+        byte[] dataByte = Base64.decodeBase64(data.getBytes("UTF-8"));
+        //加密秘钥
+        byte[] keyByte = Base64.decodeBase64(key.getBytes("UTF-8"));
+        //偏移量
+        byte[] ivByte = Base64.decodeBase64(iv.getBytes("UTF-8"));
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+        SecretKeySpec spec = new SecretKeySpec(keyByte, "AES");
+        AlgorithmParameters parameters = AlgorithmParameters.getInstance("AES");
+        parameters.init(new IvParameterSpec(ivByte));
+        // 初始化
+        cipher.init(Cipher.DECRYPT_MODE, spec, parameters);
+        byte[] resultByte = cipher.doFinal(dataByte);
+        if (null != resultByte && resultByte.length > 0) {
+            String result = new String(resultByte, "UTF-8");
+            return result;
+        }
+        return null;
+    }
+
 }
