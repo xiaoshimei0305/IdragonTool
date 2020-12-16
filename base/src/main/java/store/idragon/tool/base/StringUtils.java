@@ -3,19 +3,12 @@ package store.idragon.tool.base;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.security.AlgorithmParameters;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidParameterSpecException;
+import java.security.*;
 import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
  * @author xiaoshimei0305
@@ -26,6 +19,10 @@ import org.apache.commons.codec.binary.Base64;
  * @see org.apache.commons.lang3.StringUtils
  */
 public class StringUtils extends  org.apache.commons.lang3.StringUtils  {
+    static {
+        //BouncyCastle是一个开源的加解密解决方案，主页在http://www.bouncycastle.org/
+        Security.addProvider(new BouncyCastleProvider());
+    }
 
     /**
      * 获取字数据【提供默认值】

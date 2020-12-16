@@ -1,6 +1,7 @@
 package store.idragon.tool.http;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import store.idragon.tool.base.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,6 +21,7 @@ import java.io.InputStreamReader;
  * date 2020/10/18 11:04 下午
  * <p>汇集常用HTTP请求方法【极简模式】，遇到复杂模式请使用{@link HttpClients}。</p>
  */
+@Slf4j
 public class HttpRequestUtils {
     /**
      * 获取HTTP响应体文本内容
@@ -62,6 +64,7 @@ public class HttpRequestUtils {
      * @throws IOException 网络访问异常
      */
     public static String get(String url,String charset) throws IOException {
+        log.info("网络请求地址：{}",url);
         HttpGet get = new HttpGet(url);
         try{
             CloseableHttpClient httpClient = HttpClients.createDefault();

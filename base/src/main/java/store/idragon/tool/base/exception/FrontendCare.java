@@ -22,10 +22,11 @@ public class FrontendCare  implements ICodeMessage {
     /**
      * 通过{ @see ICodeMessage }创建前端需要的错误编码信息
      * @param codeMessage 错误编码信息
+     * @param args 错误信息占位符参数
      */
-    public FrontendCare(ICodeMessage codeMessage) {
+    public FrontendCare(ICodeMessage codeMessage,String... args) {
         this.code=codeMessage.getCode();
-        this.message=codeMessage.getMessage();
+        this.message=codeMessage.detailMessage(args);
     }
 
     @Override

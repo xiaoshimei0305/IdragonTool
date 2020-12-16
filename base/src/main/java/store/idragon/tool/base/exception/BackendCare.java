@@ -27,19 +27,21 @@ public class BackendCare implements ICodeMessage {
      * 通过{ @see ICodeMessage } { @see Throwable}创建后端需要的错误编码信息
      * @param cause 异常堆栈信息
      * @param codeMessage 错误编码信息
+     * @param args 错误信息占位符参数
      */
-    public BackendCare(Throwable cause,ICodeMessage codeMessage) {
-        this(codeMessage);
+    public BackendCare(Throwable cause,ICodeMessage codeMessage,String... args) {
+        this(codeMessage,args);
         this.cause = cause;
     }
 
     /**
      * 通过{ @see ICodeMessage } 创建后端需要的错误编码信息
      * @param codeMessage  错误编码信息
+     * @param args 错误信息占位符参数
      */
-    public BackendCare(ICodeMessage codeMessage) {
+    public BackendCare(ICodeMessage codeMessage,String... args) {
         this.code=codeMessage.getCode();
-        this.message=codeMessage.getMessage();
+        this.message=codeMessage.detailMessage(args);
     }
 
     @Override

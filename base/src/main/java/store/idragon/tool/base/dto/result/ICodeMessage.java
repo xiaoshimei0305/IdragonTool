@@ -1,5 +1,8 @@
 package store.idragon.tool.base.dto.result;
 
+import store.idragon.tool.base.StringUtils;
+import store.idragon.tool.base.check.ParamCheckUtils;
+
 /**
  * @author xiaoshimei0305
  * date  2020/12/14 10:36 下午
@@ -18,5 +21,26 @@ public interface ICodeMessage {
      * @return 消息
      */
     public String getMessage();
+
+    /**
+     * 获取错误消息编码全量信息【主要用于异常信息直接收消息情况】
+     * @param  args 格式化参数
+     * @return 返回全量错误信息
+     */
+    default String getCodeMessage(String... args){
+        String code=getCode();
+        String message= StringUtils.getValue(detailMessage(args),"未知错误");
+        ParamCheckUtils.notNull(code,"错误编码");
+        return String.format("%s,[code:%s]",message,code);
+    }
+
+    /**
+     * 获取完整错误信息
+     * @param args 格式化数据
+     * @return 返回错误详细
+     */
+    default String detailMessage(String... args){
+        return String.format(getMessage(),args);
+    }
 
 }

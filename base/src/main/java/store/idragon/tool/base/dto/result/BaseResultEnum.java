@@ -14,7 +14,11 @@ public enum BaseResultEnum implements ICodeMessage{
     /**
      * 操作成功【无消息】
      */
-    SUCCESS_NO_MESSAGE("0000",""),
+    SUCCESS_NO_MESSAGE("00000000",""),
+    /**
+     * 参数错误
+     */
+    FAILED_PARAMS_EMPTY_CHECK("10000000","参数:%s不能为空"),
     /**
      * 操作失败
      */
