@@ -1,6 +1,8 @@
 package store.idragon.tool.base.dto.result;
 
 import lombok.Data;
+import store.idragon.tool.base.StringUtils;
+import store.idragon.tool.base.exception.IDragonException;
 
 /**
  * @author xiaoshimei0305
@@ -18,6 +20,7 @@ public class ResultInfo<T> {
      * 结果消息
      */
     private String message;
+
     /**
      * 结果数据
      */
@@ -39,6 +42,33 @@ public class ResultInfo<T> {
         initCodeMessage(iCodeMessage);
     }
 
+    /**
+     * 获取异常错误信息返回给前台
+     * @param exception 异常信息
+     * @return 错误描述信息
+     */
+    public static   ResultInfo<String> fail(Exception exception){
+        IDragonException iDragonException;
+        if(exception instanceof IDragonException){
+            iDragonException=(IDragonException) exception;
+        }else{
+            iDragonException=new IDragonException(exception);
+        }
+        return fail(iDragonException);
+    }
+
+    /**
+     * 获取异常错误信息返回给前台
+     * @param exception 异常信息
+     * @return 错误描述信息
+     */
+    public static   ResultInfo<String> fail(IDragonException exception){
+        ResultInfo failInfo=new ResultInfo();
+        failInfo.setMessage(exception.getMessage());
+        failInfo.setCode(exception.getCode());
+        failInfo.setData(exception.getLocalizedMessage());
+        return failInfo;
+    }
     /**
      * 返回失败消息
      * @param <S> 数据类型
@@ -78,4 +108,11 @@ public class ResultInfo<T> {
         }
     }
 
+    /**
+     * 判断请求结果
+     * @return 成功标示
+     */
+    public boolean isSuccess() {
+        return StringUtils.isBlank(this.code.replace("0",""));
+    }
 }

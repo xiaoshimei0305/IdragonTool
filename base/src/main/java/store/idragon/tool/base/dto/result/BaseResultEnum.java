@@ -18,7 +18,7 @@ public enum BaseResultEnum implements ICodeMessage{
     /**
      * 参数错误
      */
-    FAILED_PARAMS_EMPTY_CHECK("10000000","参数:%s不能为空"),
+    FAILED_PARAMS_EMPTY_CHECK("00000001","参数:%s不能为空"),
     /**
      * 操作失败
      */

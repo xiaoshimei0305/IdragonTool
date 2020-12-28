@@ -6,6 +6,7 @@ import store.idragon.tool.base.StringUtils;
 import store.idragon.tool.base.check.ParamCheckUtils;
 import store.idragon.tool.base.check.ResultCheckUtils;
 import store.idragon.tool.base.exception.IDragonException;
+import store.idragon.tool.base.inf.IKeyValueHolder;
 import store.idragon.tool.http.HttpRequestUtils;
 import store.idragon.tool.http.wechat.dto.LoginInfo;
 import store.idragon.tool.http.wechat.dto.WxPhoneInfo;
@@ -34,6 +35,11 @@ public class WeChatMiniAppClient {
      */
     private ISessionKeyHolder sessionKeyHolder;
 
+    public WeChatMiniAppClient(String appId, String appSecret, IKeyValueHolder<String> dataHolder) {
+        ISessionKeyHolder iSessionKeyHolder=new SessionKeyHolder(dataHolder);
+        initClient(appId,appSecret,iSessionKeyHolder);
+    }
+
     /**
      * 微信客户端创建
      * @param appId  微信ID
@@ -41,12 +47,7 @@ public class WeChatMiniAppClient {
      * @param sessionKeyHolder 保存sessionKey
      */
     public WeChatMiniAppClient(String appId, String appSecret,ISessionKeyHolder sessionKeyHolder) {
-        ParamCheckUtils.notNull(appId,"appId");
-        ParamCheckUtils.notNull(appSecret,"密文");
-        ParamCheckUtils.notNull(sessionKeyHolder,"sessionKey保持对象");
-        this.appId = appId;
-        this.appSecret = appSecret;
-        this.sessionKeyHolder =sessionKeyHolder;
+        initClient(appId,appSecret,sessionKeyHolder);
     }
 
     /**
@@ -100,13 +101,27 @@ public class WeChatMiniAppClient {
      */
     private JSONObject parseWxInfo(String encryptedData, String iv){
         try {
-            JSONObject resultData=JSONObject.parseObject(StringUtils.aesDecrypt(encryptedData,iv,sessionKeyHolder.getSessionKey()));
+            JSONObject resultData=JSONObject.parseObject(StringUtils.aesDecrypt(encryptedData,sessionKeyHolder.getSessionKey(),iv));
             ResultCheckUtils.checkJson(resultData,"errcode","errmsg");
             return resultData;
         }catch (Exception e){
             log.error("解析微信用户信息异常：{}",e);
             throw  new IDragonException(e);
         }
+    }
+    /**
+     * 初始化客户端信息
+     * @param appId  微信ID
+     * @param appSecret 微信密钥
+     * @param sessionKeyHolder 保存sessionKey
+     */
+    private void initClient(String appId, String appSecret,ISessionKeyHolder sessionKeyHolder){
+        ParamCheckUtils.notNull(appId,"appId");
+        ParamCheckUtils.notNull(appSecret,"密文");
+        ParamCheckUtils.notNull(sessionKeyHolder,"sessionKey保持对象");
+        this.appId = appId;
+        this.appSecret = appSecret;
+        this.sessionKeyHolder =sessionKeyHolder;
     }
 
 
