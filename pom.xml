@@ -17,6 +17,7 @@
         <module>word</module>
         <module>excel</module>
         <module>rest</module>
+        <module>example</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

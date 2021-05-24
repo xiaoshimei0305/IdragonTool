@@ -34,8 +34,8 @@ public class ExcelWriteUtils {
      * @throws IOException 文件读写过程中可能存在IO异常情况
      */
     public static void syncContent(int idCol,String sourceFile,String sourceSheetName,String targetFile,String targetSheetName,String... ignoreIds) throws IOException {
-        Workbook sourceWorkBook = ExcelReadUtils.getWorkbookByFileName(sourceFile);
-        Workbook targetWorkBook = ExcelReadUtils.getWorkbookByFileName(targetFile);
+        Workbook sourceWorkBook = WorkBookUtils.getWorkbookByFileName(sourceFile);
+        Workbook targetWorkBook = WorkBookUtils.getWorkbookByFileName(targetFile);
         if(sourceWorkBook!=null&&targetWorkBook!=null){
             Sheet sourceSheet = sourceWorkBook.getSheet(sourceSheetName);
             Sheet targetSheet = targetWorkBook.getSheet(targetSheetName);

@@ -1,6 +1,7 @@
 package store.idragon.tool.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import store.idragon.tool.base.StringUtils;
 
@@ -22,7 +23,22 @@ public class CellReadUtils {
         if(row!=null){
             Cell cell = row.getCell(index);
             if(cell!=null){
-                return StringUtils.getValue(cell.getStringCellValue(),defaultValue);
+                String resultStr;
+                CellType cellType = cell.getCellType();
+                switch (cellType){
+                    case STRING:
+                        resultStr=cell.getStringCellValue();
+                        break;
+                    case FORMULA:
+                        resultStr=cell.getCellFormula();
+                        break;
+                    case NUMERIC:
+                        resultStr=Double.toString(cell.getNumericCellValue());
+                        break;
+                    default:
+                        resultStr="";
+                }
+                return StringUtils.getValue(resultStr,defaultValue);
             }
         }
         return defaultValue;

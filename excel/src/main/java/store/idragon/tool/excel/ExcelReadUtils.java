@@ -2,17 +2,12 @@ package store.idragon.tool.excel;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import store.idragon.tool.base.StringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 
@@ -23,14 +18,6 @@ import java.util.List;
  * description excel  data read util
  */
 public class ExcelReadUtils {
-    /**
-     *  Excel file mark before 2003 version
-     */
-    private static final String EXCEL_XLS = "xls";
-    /**
-     *  Excel file mark after 2007 version
-     */
-    private static final String EXCEL_XLSX = "xlsx";
 
     /**
      * Get data by file name
@@ -42,18 +29,9 @@ public class ExcelReadUtils {
      * @throws IOException 文件数据读取存在IO异常情况
      */
     public static <T> List<T> getDataByFileName(String fileName,String sheetName,Class<T> targetClass) throws IOException {
-        JSONObject json=getDataByFileName(fileName);
+        JSONObject json=getDataByFileName(fileName,SheetConfig.getDefaultSheetConfig(),sheetName);
         JSONArray ja=json.getJSONArray(sheetName);
         return ja.toJavaList(targetClass);
-    }
-    /**
-     *  Get data by file name
-     * @param fileName file name
-     * @return Excel 文件数据
-     * @throws IOException 文件数据读取存在IO异常情况
-     */
-    public static JSONObject getDataByFileName(String fileName) throws IOException {
-        return getDataByFileName(fileName,0);
     }
     /**
      *  Get data by file name
@@ -62,87 +40,129 @@ public class ExcelReadUtils {
      * @return Excel 文件数据
      * @throws IOException 文件数据读取存在IO异常情况
      */
-    public static JSONObject getDataByFileName(String fileName,int titleIndex) throws IOException {
-        Workbook wb = getWorkbookByFileName(fileName);
-        return workbookToJSON(wb,titleIndex);
+    public static JSONObject getDataByFileName(String fileName,SheetConfig sheetConfig,String... sheetNames) throws IOException {
+        Workbook wb = WorkBookUtils.getWorkbookByFileName(fileName);
+        return workbookToJSON(wb,sheetConfig,sheetNames);
     }
     /**
      * format Workbook data to JSON
      * @param workbook Workbook
      * @param titleIndex index of title
+     * @param ignoreBeforeTitleIndex 是否忽略标题之前数据内容，默认true
+     * @param sheetNames 解析sheet列表，默认解析所有
      * @return 表格数据
      */
-    public static JSONObject workbookToJSON(Workbook workbook,int titleIndex){
+    private  static JSONObject workbookToJSON(Workbook workbook,SheetConfig sheetConfig,String... sheetNames){
         JSONObject data=new JSONObject();
         int sheetSize = workbook.getNumberOfSheets();
+        // 检索表格sheet页
         for(int i=0;i<sheetSize;i++){
             Sheet sheet = workbook.getSheetAt(i);
             String sheetName=sheet.getSheetName();
-            JSONArray list=new JSONArray();
-            //col number
-            int colNum=sheet.getRow(titleIndex).getPhysicalNumberOfCells();
-            //row number
-            int rowNum=sheet.getPhysicalNumberOfRows();
-            //初始化字段名称,使用首行
-            String[] titleNames=new String[colNum];
-            Row titleRow = sheet.getRow(titleIndex);
-            for(int j=0;j<colNum;j++){
-                titleNames[j]=CellReadUtils.getValueByIndex(titleRow,j,"");
-            }
-            for(int j=1;j<rowNum;j++){
-                if(j==titleIndex){
+            // 判断sheet是否需要解析
+            if(sheetNames!=null && sheetNames.length>0){
+                boolean needParse = false;
+                for(String item: sheetNames){
+                    if(sheetName.equalsIgnoreCase(item)){
+                        needParse = true;
+                        break;
+                    }
+                }
+                if(!needParse){
                     continue;
                 }
-                Row tempRow=sheet.getRow(j);
-                JSONObject item=new JSONObject();
-                boolean allEmpty=true;
-                for(int k=0;k<colNum;k++){
-                    String value=CellReadUtils.getValueByIndex(tempRow,k,"");
-                    if(StringUtils.isBlank(titleNames[k])){
-                        continue;
-                    }
-                    item.put(titleNames[k],value);
-                    if(!StringUtils.isBlank(value)){
-                        allEmpty=false;
-                    }
-                }
-                if(!allEmpty){
-                    list.add(item);
-                }
             }
-            data.put(sheetName,list);
+            // 或且最大列数
+            int colNum=sheet.getRow(sheetConfig.getFirstTitleIndex()).getPhysicalNumberOfCells();
+            // 初始化标题
+            String[] titleNames = initTitleNames(colNum, sheet, sheetConfig);
+            // 获取表格数据
+            data.put(sheetName,getTableList(sheet,titleNames,sheetConfig));
         }
         return data;
     }
+
+
     /**
-     *  GET @Workbook object by fileName
-     * @param fileName file name
-     * @return Workbook
-     * @throws IOException 文件数据读取存在IO异常情况
+     * 获取表格标题
+     * @param maxColumn 最大列表数
+     * @param sheet 表格sheet对象
+     * @param titleRowList 标题行索引
+     * @return 实体key值
      */
-    public static Workbook getWorkbookByFileName(String fileName) throws IOException {
-        if(StringUtils.isBlank(fileName)){
-            throw new IllegalArgumentException("fileName is empty");
+    private static String[] initTitleNames(int maxColumn, Sheet sheet,SheetConfig sheetConfig){
+        //初始化字段名称,使用首行
+        String[] titleNames=new String[maxColumn];
+        Row titleRow = sheet.getRow(sheetConfig.getLastTitleIndex());
+        for(int j=0;j<maxColumn;j++){
+            titleNames[j]=CellReadUtils.getValueByIndex(titleRow,j,j+"");
         }
-        File file =new File(fileName.trim());
-        if(!file.getName().endsWith(EXCEL_XLS)&&!file.getName().endsWith(EXCEL_XLSX)){
-            throw new IllegalArgumentException("file format is error");
-        }
-        return getWorkbookByFileName(new FileInputStream(file),file.getName().endsWith(EXCEL_XLS));
+        return titleNames;
     }
 
     /**
-     *  Get @Workbook object by InputStream
-     * @param inputStream InputStream
-     * @param isXlsx check excel version
-     * @return Workbook 对象
-     * @throws IOException 文件数据读取存在IO异常情况
+     * 获取表格数据
+     * @param sheet 表格对象
+     * @param titleNames 表格标题
+     * @param startRows 表格列表起始行（如果小于0，说明不进行无限行数据读取）
+     * @param emunRowIndex 枚举需要读取数据对列表
+     * @return
      */
-    public static Workbook getWorkbookByFileName(InputStream inputStream, boolean  isXlsx) throws IOException {
-        if(!isXlsx){
-            return new XSSFWorkbook(inputStream);
+    private static JSONArray getTableList(Sheet sheet,String[] titleNames,SheetConfig sheetConfig){
+        JSONArray data=new JSONArray();
+        //不满足读取数据条件，忽略数据读取。
+        if(sheet==null || titleNames==null || titleNames.length<1){
+            return data;
+        }
+        // 优先读取枚举行数据
+        int[] dataRowIndexList = sheetConfig.getDataRowIndexList();
+        if(dataRowIndexList != null &&dataRowIndexList.length>0){
+            for(int rowIndex:dataRowIndexList){
+                JSONObject item=getRowData(titleNames,sheet.getRow(rowIndex));
+                if(item != null ){
+                    data.add(item);
+                }
+            }
+        }
+        // 读取范围获取数据
+        int maxRowNum=sheet.getPhysicalNumberOfRows();
+        int startRows=sheetConfig.getStartDataRowIndex();
+        if(startRows >= 0 && startRows<= maxRowNum){
+            for(int rowIndex=startRows;rowIndex<maxRowNum;rowIndex++){
+                JSONObject item=getRowData(titleNames,sheet.getRow(rowIndex));
+                if(item != null ){
+                    data.add(item);
+                }
+            }
+        }
+        return data;
+    }
+
+    /**
+     * 获取行数据
+     * @param titleNames
+     * @param row
+     * @return
+     */
+    private static JSONObject getRowData(String[] titleNames,Row row){
+        if(titleNames == null || titleNames.length < 1 || row == null){
+            return null;
+        }
+        JSONObject item=new JSONObject();
+        boolean allEmpty=true;
+        for(int i=0;i<titleNames.length;i++){
+            String name=titleNames[i];
+            String value=CellReadUtils.getValueByIndex(row,i,"");
+            if(!StringUtils.isBlank(value)){
+                allEmpty = false;
+                item.put(name,value);
+            }
+        }
+        if(allEmpty){
+            return null;
         }else{
-            return new HSSFWorkbook(inputStream);
+            return item;
         }
     }
+
 }
