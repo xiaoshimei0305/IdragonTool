@@ -24,6 +24,11 @@ public class SheetConfig {
      * 数据行序号
      */
     private int[] dataRowIndexList;
+    /**
+     * 编码列表，与excel编码对应
+     */
+    private String[] nameList;
+
 
     /**
      * 获取第一个标题列
@@ -55,6 +60,18 @@ public class SheetConfig {
             return startDataRowIndex;
         }
         return getLastTitleIndex()+1;
+    }
+
+    /**
+     * 获取指定列配置编码
+     * @param colIndex
+     * @return
+     */
+    public  String getName(int colIndex){
+        if(this.nameList == null ||this.nameList.length < colIndex + 1){
+            return null;
+        }
+        return this.nameList[colIndex];
     }
 
     /**

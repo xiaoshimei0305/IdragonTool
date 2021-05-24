@@ -1,10 +1,12 @@
 package store.idragon.tool.example;
 
 import com.alibaba.fastjson.JSONObject;
+import store.idragon.tool.example.bean.FuncEntity;
 import store.idragon.tool.excel.ExcelReadUtils;
 import store.idragon.tool.excel.SheetConfig;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author xiaoshimei0305
@@ -16,8 +18,13 @@ public class Excel {
     public static void main(String[] args) throws IOException {
         SheetConfig config=SheetConfig.getDefaultSheetConfig();
         config.setTitleIndexList(new int[]{1});
-        JSONObject data = ExcelReadUtils.getDataByFileName("/Users/chenxinjun/Downloads/广东移动前端业务梳理.xlsx", config,"功能列表");
-        System.out.println(data.toJSONString());
+        config.setNameList(new String[]{"codeSeq","funcName","","appName"});
+        String fileName="/Users/chenxinjun/Downloads/广东移动前端业务梳理.xlsx";
+        String sheetName="功能列表";
+
+        List<FuncEntity> data=ExcelReadUtils.getDataByFileName(fileName,config,sheetName,FuncEntity.class);
+       // JSONObject data = ExcelReadUtils.getDataByFileName(fileName, config,sheetName);
+        System.out.println(data);
 
 
     }

@@ -28,8 +28,8 @@ public class ExcelReadUtils {
      * @return 读取到的结果
      * @throws IOException 文件数据读取存在IO异常情况
      */
-    public static <T> List<T> getDataByFileName(String fileName,String sheetName,Class<T> targetClass) throws IOException {
-        JSONObject json=getDataByFileName(fileName,SheetConfig.getDefaultSheetConfig(),sheetName);
+    public static <T> List<T> getDataByFileName(String fileName,SheetConfig sheetConfig,String sheetName,Class<T> targetClass) throws IOException {
+        JSONObject json=getDataByFileName(fileName,sheetConfig,sheetName);
         JSONArray ja=json.getJSONArray(sheetName);
         return ja.toJavaList(targetClass);
     }
@@ -95,7 +95,12 @@ public class ExcelReadUtils {
         String[] titleNames=new String[maxColumn];
         Row titleRow = sheet.getRow(sheetConfig.getLastTitleIndex());
         for(int j=0;j<maxColumn;j++){
-            titleNames[j]=CellReadUtils.getValueByIndex(titleRow,j,j+"");
+            String configName=sheetConfig.getName(j);
+            if(!StringUtils.isBlank(configName)){
+                titleNames[j]=configName;
+            }else{
+                titleNames[j]=CellReadUtils.getValueByIndex(titleRow,j,j+"");
+            }
         }
         return titleNames;
     }
