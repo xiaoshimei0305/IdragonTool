@@ -91,6 +91,16 @@ public class StringUtils extends  org.apache.commons.lang3.StringUtils  {
         return null;
     }
 
+
+    /**
+     * 从输入流中读入文本内容
+     * @param inputStream
+     * @return
+     */
+    public static String getStringByInputStream(InputStream inputStream) throws IOException {
+       return getStringByInputStream(inputStream,null);
+    }
+
     /**
      * 从输入流中读入文本内容
      * @param inputStream
@@ -111,15 +121,6 @@ public class StringUtils extends  org.apache.commons.lang3.StringUtils  {
         inputStream.close();
         return buffer.toString();
     }
-    /**
-     * 从输入流中读入文本内容
-     * @param inputStream
-     * @return
-     */
-    public static String getStringByInputStream(InputStream inputStream) throws IOException {
-       return getStringByInputStream(inputStream,null);
-    }
-
     /**
      * 输出内容到文本当
      * @param filePath

@@ -1,16 +1,14 @@
 package store.idragon.tool.word;
 
 
-import freemarker.template.TemplateException;
+import org.apache.poi.ooxml.extractor.POIXMLTextExtractor;
+
+import java.io.*;
+import org.apache.poi.ooxml.POIXMLDocument;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import store.idragon.tool.base.StringUtils;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,6 +52,7 @@ public class XmlUtils {
      * @throws IOException
      */
     public static String getFormatXmlContent(String modelName) throws IOException {
+        //       String content= readWord(modelName);
         String content= StringUtils.getStringByInputStream(new FileInputStream(modelName));
         Pattern pattern=Pattern.compile(findSpliceFlag);
         Matcher matcher = pattern.matcher(content);
@@ -108,5 +107,33 @@ public class XmlUtils {
             resultStr = resultStr.replace(oldFlag,"</#list>");
         }
         return resultStr;
+    }
+
+    /**
+     * 获取word文档xml格式内容
+     * @param path
+     * @return
+     */
+    public static String readWord(String path) {
+        String buffer = "";
+        try {
+            if (path.endsWith(".doc")) {
+                InputStream is = new FileInputStream(new File(path));
+                XWPFWordExtractor ex = new XWPFWordExtractor(OPCPackage.open(is));
+                buffer = ex.getText();
+                ex.close();
+            } else if (path.endsWith("docx")) {
+                OPCPackage opcPackage = POIXMLDocument.openPackage(path);
+                POIXMLTextExtractor extractor = new XWPFWordExtractor(opcPackage);
+                buffer = extractor.getText();
+                extractor.close();
+            } else {
+                System.out.println("此文件不是word文件！");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return buffer;
     }
 }
