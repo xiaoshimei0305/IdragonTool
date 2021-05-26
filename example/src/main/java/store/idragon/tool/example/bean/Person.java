@@ -15,6 +15,13 @@ public class Person {
     private String time;
     private String content;
 
+    /**
+     *
+     * @param phone phone
+     * @param name name
+     * @param time time
+     * @param content content
+     */
     public Person(String phone, String name, String time, String content) {
         this.phone = phone;
         this.name = name;

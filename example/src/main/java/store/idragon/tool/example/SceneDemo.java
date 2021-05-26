@@ -16,11 +16,20 @@ import java.io.IOException;
  * @version 1.0
  */
 public class SceneDemo {
+    /**
+     * TemplateException
+     * @param args 启动参数
+     * @throws IOException  IOException
+     * @throws TemplateException TemplateException
+     */
     public static void main(String[] args) throws IOException, TemplateException {
         exportExcelToWord();
     }
+
     /**
      * 导出excel数据到word模版中
+     * @throws IOException IOException
+     * @throws TemplateException TemplateException
      */
     public static void exportExcelToWord() throws IOException, TemplateException {
         // 功能点模版（word点击另存为Word XML 文档(.xml)，切记不是：Word 2003 XML 文档(.xml)）

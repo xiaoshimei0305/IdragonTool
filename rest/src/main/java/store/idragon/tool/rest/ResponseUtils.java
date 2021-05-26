@@ -17,8 +17,9 @@ public class ResponseUtils {
     /**
      * 返回前端数据
      * @param data 数据
-     * @param response 响应工具
-     * @param <T> 数据类型
+     * @param response 响应对象
+     * @param <T>  数据类型
+     * @throws IOException IOException
      */
     public static <T>  void responseData(T data, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("utf-8");
@@ -32,6 +33,7 @@ public class ResponseUtils {
      * 异常情况下返回结果
      * @param exception 异常信息
      * @param response 响应工具
+     * @throws IOException IOException
      */
     public static void responseWhenException(Exception exception, HttpServletResponse response) throws IOException {
         responseData(ResultInfo.fail(exception),response);

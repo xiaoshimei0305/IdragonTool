@@ -35,6 +35,12 @@ public class WeChatMiniAppClient {
      */
     private ISessionKeyHolder sessionKeyHolder;
 
+    /**
+     * 微信客户端创建
+     * @param appId  微信ID
+     * @param appSecret a微信密钥
+     * @param dataHolder 数据持用对象
+     */
     public WeChatMiniAppClient(String appId, String appSecret, IKeyValueHolder<String> dataHolder) {
         ISessionKeyHolder iSessionKeyHolder=new SessionKeyHolder(dataHolder);
         initClient(appId,appSecret,iSessionKeyHolder);

@@ -32,22 +32,23 @@ public class XmlUtils {
      *  查找For循环结尾标签
      */
     public static final String endListFlag="<w:p ((?!w:p ).)*?\\$\\{&lt;/#list&gt;\\}[\\s\\S]*?</w:p>";
+
     /**
      * 模版文件生成freeMark模版内容
-     * @param fileName 模版文件地址
-     * @return
-     * @throws IOException
+     * @param fileName 模版文件名称[word 另存为Word XML 文档(.xml)，切记不是：Word 2003 XML 文档(.xml)]
+     * @return 模版内容
+     * @throws IOException IOException
      */
     public static String getFreeMarkContentByFileName(String fileName) throws IOException {
         return formatFreeMarkModel(getFormatXmlContent(fileName));
     }
     /**
-     * 格式化模版内容，防止一个标签出现在多个<w:t></w:t> 范围内，造成无法识别的窘境
+     * 格式化模版内容，防止一个表达式出现在多个标签中，造成无法识别的窘境
      * @param modelName 文件名称
-     * @return
-     * @throws IOException
+     * @return 格式化xml内容
+     * @throws IOException IOException
      */
-    public static String getFormatXmlContent(String modelName) throws IOException {
+    private static String getFormatXmlContent(String modelName) throws IOException {
         String content= StringUtils.getStringByInputStream(new FileInputStream(modelName));
         Pattern pattern=Pattern.compile(findSpliceFlag);
         Matcher matcher = pattern.matcher(content);
@@ -62,10 +63,10 @@ public class XmlUtils {
         return resultStr;
     }
     /**
-     * 获取FreeMark模型
-     * @param modelContent
+     * 转换为freeMark模型
+     * @param modelContent 原始模型内容
      */
-    public static String formatFreeMarkModel(String modelContent){
+    private static String formatFreeMarkModel(String modelContent){
         // 1、替换结束标签
         modelContent=replaceEndForFlag(modelContent);
         // 1、替换开始标签，查找开始部分

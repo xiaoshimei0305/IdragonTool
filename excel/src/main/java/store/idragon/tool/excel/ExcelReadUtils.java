@@ -21,34 +21,37 @@ public class ExcelReadUtils {
 
     /**
      * Get data by file name
-     * @param fileName file name
-     * @param sheetName sheet name
-     * @param targetClass target class
-     * @param <T> 数据类型
-     * @return 读取到的结果
-     * @throws IOException 文件数据读取存在IO异常情况
+     * @param fileName 文件名称
+     * @param sheetName 表格sheet名称
+     * @param targetClass 目标地址类
+     * @param <T> 结果数据对象
+     * @return 结果数据对象
+     * @throws IOException IOException
      */
-    public static <T> List<T> getDataByFileName(String fileName,SheetConfig sheetConfig,String sheetName,Class<T> targetClass) throws IOException {
-        JSONObject json=getDataByFileName(fileName,sheetConfig,sheetName);
+    public static <T> List<T> getDataByFileName(String fileName,String sheetName,Class<T> targetClass) throws IOException {
+        JSONObject json=getDataByFileName(fileName,sheetName);
         JSONArray ja=json.getJSONArray(sheetName);
         return ja.toJavaList(targetClass);
     }
+
     /**
-     *  Get data by file name
-     * @param fileName file name
-     * @param titleIndex title index
-     * @return Excel 文件数据
-     * @throws IOException 文件数据读取存在IO异常情况
+     * Get data by file name
+     * @param fileName 文件名称
+     * @param sheetNames 表sheet名称
+     * @return 结果数据
+     * @throws IOException IOException
      */
     public static JSONObject getDataByFileName(String fileName,String... sheetNames) throws IOException {
         return getDataByFileName(fileName,SheetConfig.getDefaultSheetConfig(),sheetNames);
     }
+
     /**
-     *  Get data by file name
-     * @param fileName file name
-     * @param titleIndex title index
-     * @return Excel 文件数据
-     * @throws IOException 文件数据读取存在IO异常情况
+     * Get data by file name
+     * @param fileName 文件名称
+     * @param sheetConfig 配置信息
+     * @param sheetNames 表格序号
+     * @return 结果数据
+     * @throws IOException IOException
      */
     public static JSONObject getDataByFileName(String fileName,SheetConfig sheetConfig,String... sheetNames) throws IOException {
         Workbook wb = WorkBookUtils.getWorkbookByFileName(fileName);
@@ -91,14 +94,12 @@ public class ExcelReadUtils {
         }
         return data;
     }
-
-
     /**
      * 获取表格标题
-     * @param maxColumn 最大列表数
-     * @param sheet 表格sheet对象
-     * @param titleRowList 标题行索引
-     * @return 实体key值
+     * @param maxColumn 最大行数
+     * @param sheet sheet对象
+     * @param sheetConfig 表格数据配置
+     * @return 标题列表
      */
     private static String[] initTitleNames(int maxColumn, Sheet sheet,SheetConfig sheetConfig){
         //初始化字段名称,使用首行
@@ -117,11 +118,10 @@ public class ExcelReadUtils {
 
     /**
      * 获取表格数据
-     * @param sheet 表格对象
-     * @param titleNames 表格标题
-     * @param startRows 表格列表起始行（如果小于0，说明不进行无限行数据读取）
-     * @param emunRowIndex 枚举需要读取数据对列表
-     * @return
+     * @param sheet sheet对象
+     * @param titleNames 表头名称列表
+     * @param sheetConfig 表格数据配置
+     * @return 表格数据列表
      */
     private static JSONArray getTableList(Sheet sheet,String[] titleNames,SheetConfig sheetConfig){
         JSONArray data=new JSONArray();
@@ -155,9 +155,9 @@ public class ExcelReadUtils {
 
     /**
      * 获取行数据
-     * @param titleNames
-     * @param row
-     * @return
+     * @param titleNames 标题名称
+     * @param row 行对象
+     * @return 行数据
      */
     private static JSONObject getRowData(String[] titleNames,Row row){
         if(titleNames == null || titleNames.length < 1 || row == null){

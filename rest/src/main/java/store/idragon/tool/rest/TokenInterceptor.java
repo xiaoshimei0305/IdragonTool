@@ -22,10 +22,19 @@ public class TokenInterceptor<T> implements HandlerInterceptor{
      */
     private TokenManager<T> tokenManager;
 
+    /**
+     * 令牌管理对象
+     * @param tokenManager tokenManager
+     */
     public TokenInterceptor(TokenManager<T> tokenManager) {
         this(null,tokenManager);
     }
 
+    /**
+     *  令牌管理对象
+     * @param tokenKey tokenKey
+     * @param tokenManager tokenManager
+     */
     public TokenInterceptor(String tokenKey,TokenManager<T> tokenManager) {
         this.tokenKey = tokenKey;
         this.tokenManager=tokenManager;

@@ -15,16 +15,16 @@ import java.util.List;
  * @version 1.0
  */
 public class Excel {
+    /**
+     * 格式化读取表格数据，并生成实体列表使用案例
+     * @param args 启动参数
+     * @throws IOException IOException
+     */
     public static void main(String[] args) throws IOException {
-        SheetConfig config=SheetConfig.getDefaultSheetConfig();
-        config.setTitleIndexList(new int[]{1});
-        config.setNameList(new String[]{"codeSeq","funcName","","appName"});
         String fileName="/Users/chenxinjun/Downloads/poi/source/广东移动前端业务梳理.xlsx";
         String sheetName="功能列表";
         String wordModel="/Users/chenxinjun/Downloads/poi/model/modelPerson.doc";
-
-        List<FuncEntity> data=ExcelReadUtils.getDataByFileName(fileName,config,sheetName,FuncEntity.class);
-       // JSONObject data = ExcelReadUtils.getDataByFileName(fileName, config,sheetName);
+        List<FuncEntity> data=ExcelReadUtils.getDataByFileName(fileName,sheetName,FuncEntity.class);
         System.out.println(data);
 
 

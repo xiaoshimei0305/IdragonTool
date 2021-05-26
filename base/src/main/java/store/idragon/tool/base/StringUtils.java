@@ -94,8 +94,9 @@ public class StringUtils extends  org.apache.commons.lang3.StringUtils  {
 
     /**
      * 从输入流中读入文本内容
-     * @param inputStream
-     * @return
+     * @param inputStream 输入流
+     * @return 文本内容
+     * @throws IOException IOException
      */
     public static String getStringByInputStream(InputStream inputStream) throws IOException {
        return getStringByInputStream(inputStream,null);
@@ -103,9 +104,10 @@ public class StringUtils extends  org.apache.commons.lang3.StringUtils  {
 
     /**
      * 从输入流中读入文本内容
-     * @param inputStream
-     * @param charsetName
-     * @return
+     * @param inputStream 输入流
+     * @param charsetName 字符集
+     * @return 文本内容
+     * @throws IOException IOException
      */
     public static String getStringByInputStream(InputStream inputStream,String charsetName) throws IOException {
         StringBuffer buffer=new StringBuffer();
@@ -123,9 +125,9 @@ public class StringUtils extends  org.apache.commons.lang3.StringUtils  {
     }
     /**
      * 输出内容到文本当
-     * @param filePath
-     * @param content
-     * @throws IOException
+     * @param filePath 文件路径
+     * @param content 输出内容
+     * @throws IOException IOException
      */
     public static void outPutContentToFile(String filePath,String content) throws IOException {
         FileWriter writer = null;

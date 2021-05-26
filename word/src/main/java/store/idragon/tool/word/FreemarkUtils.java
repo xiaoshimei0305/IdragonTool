@@ -18,11 +18,12 @@ public class FreemarkUtils {
 
     /**
      * 解析模板
-     *
-     * @param configuration
-     * @param templateName
-     * @throws IOException
-     * @throws TemplateException
+     * @param templateName 模版名称
+     * @param templateValue 模版内容
+     * @param data 渲染数据
+     * @return 渲染后结果
+     * @throws IOException IOException
+     * @throws TemplateException TemplateException
      */
     public static String processTemplate(String templateName, String templateValue,Map<String,Object> data) throws IOException, TemplateException {
         StringWriter stringWriter = new StringWriter();

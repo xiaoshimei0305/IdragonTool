@@ -19,12 +19,15 @@ import java.util.Map;
  * @version 1.0
  */
 public class WordTest {
-
+    /**
+     * 测试word模版输出案例
+     * @param args 启动参数
+     * @throws IOException IOException
+     * @throws TemplateException TemplateException
+     */
     public static void main(String[] args) throws IOException, TemplateException {
         String wordModel="/Users/chenxinjun/Downloads/poi/model/modelPerson.xml";
         String outFile="/Users/chenxinjun/Downloads/poi/model/result.doc";
-//        String baseXmlModel= XmlUtils.getFormatXmlContent(wordModel);
-//        String freeMarkModel=XmlUtils.formatFreeMarkModel(baseXmlModel);
         String freeMarkModel=XmlUtils.getFreeMarkContentByFileName(wordModel);
         Map<String, Object> data=new HashMap<>(10);
         List<Person> list=new ArrayList<Person>();

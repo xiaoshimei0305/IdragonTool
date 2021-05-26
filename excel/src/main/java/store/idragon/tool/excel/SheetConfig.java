@@ -32,7 +32,7 @@ public class SheetConfig {
 
     /**
      * 获取第一个标题列
-     * @return
+     * @return 第一个标题行
      */
     public int getFirstTitleIndex(){
         if(titleIndexList == null || titleIndexList.length < 1){
@@ -42,7 +42,7 @@ public class SheetConfig {
     }
     /**
      * 获取最后一个标题列
-     * @return
+     * @return 最后一个标题行序号
      */
     public int getLastTitleIndex(){
         if(titleIndexList == null || titleIndexList.length < 1){
@@ -53,7 +53,7 @@ public class SheetConfig {
 
     /**
      * 获取开始数据读取序号
-     * @return
+     * @return 开始解析excel数据序号
      */
     public  int getStartDataRowIndex(){
         if(startDataRowIndex>0){
@@ -64,8 +64,8 @@ public class SheetConfig {
 
     /**
      * 获取指定列配置编码
-     * @param colIndex
-     * @return
+     * @param colIndex 索引序列号
+     * @return 对应索引名称
      */
     public  String getName(int colIndex){
         if(this.nameList == null ||this.nameList.length < colIndex + 1){
@@ -76,7 +76,7 @@ public class SheetConfig {
 
     /**
      * 获取默认表格读取配置
-     * @return
+     * @return 默认表格导出配置信息
      */
     public static SheetConfig getDefaultSheetConfig(){
         return new SheetConfig();

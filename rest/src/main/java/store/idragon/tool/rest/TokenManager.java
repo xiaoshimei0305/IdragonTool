@@ -16,7 +16,7 @@ public class TokenManager<T> {
 
     /**
      * 创建用户存储对象
-     * @param dataHolder
+     * @param dataHolder 存储数据对象
      */
     public TokenManager(IKeyValueHolder<T> dataHolder) {
         this.dataHolder = dataHolder;
