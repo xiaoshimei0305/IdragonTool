@@ -40,6 +40,16 @@ public class ExcelReadUtils {
      * @return Excel 文件数据
      * @throws IOException 文件数据读取存在IO异常情况
      */
+    public static JSONObject getDataByFileName(String fileName,String... sheetNames) throws IOException {
+        return getDataByFileName(fileName,SheetConfig.getDefaultSheetConfig(),sheetNames);
+    }
+    /**
+     *  Get data by file name
+     * @param fileName file name
+     * @param titleIndex title index
+     * @return Excel 文件数据
+     * @throws IOException 文件数据读取存在IO异常情况
+     */
     public static JSONObject getDataByFileName(String fileName,SheetConfig sheetConfig,String... sheetNames) throws IOException {
         Workbook wb = WorkBookUtils.getWorkbookByFileName(fileName);
         return workbookToJSON(wb,sheetConfig,sheetNames);

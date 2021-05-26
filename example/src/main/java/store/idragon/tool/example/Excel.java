@@ -19,8 +19,9 @@ public class Excel {
         SheetConfig config=SheetConfig.getDefaultSheetConfig();
         config.setTitleIndexList(new int[]{1});
         config.setNameList(new String[]{"codeSeq","funcName","","appName"});
-        String fileName="/Users/chenxinjun/Downloads/广东移动前端业务梳理.xlsx";
+        String fileName="/Users/chenxinjun/Downloads/poi/source/广东移动前端业务梳理.xlsx";
         String sheetName="功能列表";
+        String wordModel="/Users/chenxinjun/Downloads/poi/model/modelPerson.doc";
 
         List<FuncEntity> data=ExcelReadUtils.getDataByFileName(fileName,config,sheetName,FuncEntity.class);
        // JSONObject data = ExcelReadUtils.getDataByFileName(fileName, config,sheetName);

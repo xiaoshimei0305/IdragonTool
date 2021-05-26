@@ -39,9 +39,15 @@
         <bcprov.version>1.55</bcprov.version>
         <guava.version>18.0</guava.version>
         <spring.version>5.3.2</spring.version>
+        <freemarker.version>2.3.20</freemarker.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
             <dependency>
                 <groupId>org.apache.commons</groupId>

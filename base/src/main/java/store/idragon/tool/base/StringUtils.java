@@ -6,6 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
 import java.security.*;
 import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -88,6 +89,75 @@ public class StringUtils extends  org.apache.commons.lang3.StringUtils  {
             return result;
         }
         return null;
+    }
+
+    /**
+     * 从输入流中读入文本内容
+     * @param inputStream
+     * @param charsetName
+     * @return
+     */
+    public static String getStringByInputStream(InputStream inputStream,String charsetName) throws IOException {
+        StringBuffer buffer=new StringBuffer();
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,isBlank(charsetName)? "utf-8" : charsetName));
+        line = reader.readLine();
+        while (line != null) {
+            buffer.append(line);
+            buffer.append("\n");
+            line = reader.readLine();
+        }
+        reader.close();
+        inputStream.close();
+        return buffer.toString();
+    }
+    /**
+     * 从输入流中读入文本内容
+     * @param inputStream
+     * @return
+     */
+    public static String getStringByInputStream(InputStream inputStream) throws IOException {
+       return getStringByInputStream(inputStream,null);
+    }
+
+    /**
+     * 输出内容到文本当
+     * @param filePath
+     * @param content
+     * @throws IOException
+     */
+    public static void outPutContentToFile(String filePath,String content) throws IOException {
+        FileWriter writer = null;
+        try {
+            File file = new File(filePath);
+            if (file.exists()) {
+                file.delete();
+            }
+            //目录不存在 则创建
+            if (!file.getParentFile().exists()) {
+                boolean mkdir = file.getParentFile().mkdirs();
+                if (!mkdir) {
+                    throw new RuntimeException("创建目标文件所在目录失败！");
+                }
+            }
+            file.createNewFile();
+            writer = new FileWriter(file);
+            if (null != content) {
+                writer.write(content);
+            }
+            writer.flush();
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            if (null != writer) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    throw new RuntimeException("文件写入后流关闭异常！");
+                }
+            }
+        }
+
     }
 
 }
