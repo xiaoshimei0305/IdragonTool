@@ -5,7 +5,7 @@
     <parent>
         <artifactId>tool</artifactId>
         <groupId>store.idragon.tool</groupId>
-        <version>0.0.3-RELEASE</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>store.idragon.tool</groupId>
             <artifactId>word</artifactId>
-            <version>0.0.3-RELEASE</version>
+            <version>0.0.3-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
