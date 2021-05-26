@@ -23,10 +23,8 @@ public class SceneDemo {
      * 导出excel数据到word模版中
      */
     public static void exportExcelToWord() throws IOException, TemplateException {
-
-
         // 功能点模版（word点击另存为Word XML 文档(.xml)，切记不是：Word 2003 XML 文档(.xml)）
-        String wordModelPath="/Users/chenxinjun/Downloads/poi/model/功能点模版.doc";
+        String wordModelPath="/Users/chenxinjun/Downloads/poi/model/功能点模版.xml";
         // excel数据源
         String excelDataPath="/Users/chenxinjun/Downloads/poi/source/广东移动前端业务梳理.xlsx";
         //输出文件
